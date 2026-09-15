@@ -8,6 +8,9 @@ def send_line(text):
     requests.post(WEBHOOK_URL, json={"title": "CHホノルル予約", "body": {"text": text}})
 
 def run():
+    # 新しい通知先へのテスト送信
+    send_line("【テスト通知】新しいカテゴリー（トークルーム）への送信成功です！")
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
