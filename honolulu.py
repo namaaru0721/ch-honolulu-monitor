@@ -1,16 +1,13 @@
 import requests
 from playwright.sync_api import sync_playwright
 
-WEBHOOK_URL = "https://webhook.worksmobile.com/message/98a5731f-7764-4495-9bc6-521fa876bcb5"
+WEBHOOK_URL = "https://webhook.worksmobile.com/message/1f163fa9-b6ec-4de9-983d-4b44031a4800"
 TARGET_URL = "https://waitwhile.com/locations/chromeheartshonolulu"
 
 def send_line(text):
     requests.post(WEBHOOK_URL, json={"title": "CHホノルル予約", "body": {"text": text}})
 
 def run():
-    # 起動テスト用（実行されると必ずLINEへ1通届きます）
-    send_line("【テスト通知】LINE WORKSへの連携チェック成功です！")
-
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
