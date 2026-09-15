@@ -12,9 +12,23 @@ def run():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         try:
+            # 1. トップページへアクセス
             page.goto(TARGET_URL, wait_until="networkidle", timeout=60000)
+            page.wait_for_timeout(3000)
+
+            # 2. 「Schedule a booking」をクリック
+            page.get_by_text("Schedule a booking").click()
+            page.wait_for_timeout(2000)
+
+            # 3. 「Personal Shopping」を選択
+            page.get_by_text("Personal Shopping").click()
+            page.wait_for_timeout(2000)
+
+            # 4. 人数「1」を選択
+            page.get_by_text("1", exact=True).click()
             page.wait_for_timeout(4000)
 
+            # 5. 空き枠判定
             body_text = page.locator("body").inner_text()
 
             if "No available times for the next 5 days" not in body_text:
