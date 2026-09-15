@@ -24,15 +24,15 @@ def run():
             page.get_by_text("Personal Shopping").click()
             page.wait_for_timeout(2000)
 
-            # 4. 人数「1」を選択
-            page.get_by_text("1", exact=True).click()
+            # 4. 人数「2」を選択
+            page.get_by_text("2", exact=True).click()
             page.wait_for_timeout(4000)
 
             # 5. 空き枠判定
             body_text = page.locator("body").inner_text()
 
             if "No available times for the next 5 days" not in body_text:
-                msg = f"【CHホノルル店】事前予約の空き枠を検知しました！\n\n予約URL:\n{TARGET_URL}"
+                msg = f"【CHホノルル店】事前予約の空き枠（2名）を検知しました！\n\n予約URL:\n{TARGET_URL}"
                 send_line(msg)
                 print("空き枠検知: LINEへ通知送信")
             else:
