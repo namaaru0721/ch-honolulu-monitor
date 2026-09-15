@@ -13,21 +13,21 @@ def run():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         try:
-            # 1. トップページへアクセス
-            page.goto(TARGET_URL, wait_until="networkidle", timeout=60000)
-            page.wait_for_timeout(3000)
+            # 1. トップページへアクセス（タイムアウト防止のためロード待ちを最適化）
+            page.goto(TARGET_URL, wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_timeout(5000)
 
             # 2. 「Schedule a booking」をクリック
             page.get_by_text("Schedule a booking").click()
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
 
             # 3. 「Personal Shopping」を選択
             page.get_by_text("Personal Shopping").click()
-            page.wait_for_timeout(2000)
+            page.wait_for_timeout(3000)
 
             # 4. 人数「2」を選択
             page.get_by_text("2", exact=True).click()
-            page.wait_for_timeout(4000)
+            page.wait_for_timeout(5000)
 
             # 5. 空き枠判定・日付・時間抽出
             body_text = page.locator("body").inner_text()
