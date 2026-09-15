@@ -13,33 +13,42 @@ def run():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
         try:
-            # 1. トップページへアクセス（タイムアウト防止のためロード待ちを最適化）
+            # 1. トップページへアクセス
             page.goto(TARGET_URL, wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(5000)
+            print(f"[1] トップページURL: {page.url}")
 
             # 2. 「Schedule a booking」をクリック
-            page.get_by_text("Schedule a booking").click()
+            btn1 = page.get_by_text("Schedule a booking")
+            print(f"[2] 'Schedule a booking' 要素数: {btn1.count()}")
+            btn1.click()
             page.wait_for_timeout(3000)
+            print(f"[2] クリック後URL: {page.url}")
+            print(f"[2] クリック後の画面冒頭200文字: {page.locator('body').inner_text()[:200]}")
 
             # 3. 「Personal Shopping」を選択
-            page.get_by_text("Personal Shopping").click()
+            btn2 = page.get_by_text("Personal Shopping")
+            print(f"[3] 'Personal Shopping' 要素数: {btn2.count()}")
+            btn2.click()
             page.wait_for_timeout(3000)
+            print(f"[3] クリック後URL: {page.url}")
+            print(f"[3] クリック後の画面冒頭200文字: {page.locator('body').inner_text()[:200]}")
 
             # 4. 人数「2」を選択
-            page.get_by_text("2", exact=True).click()
+            btn3 = page.get_by_text("2", exact=True)
+            print(f"[4] '2'(人数) 要素数: {btn3.count()}")
+            btn3.click()
             page.wait_for_timeout(5000)
+            print(f"[4] クリック後URL: {page.url}")
 
             # 5. 空き枠判定・日付・時間抽出
             body_text = page.locator("body").inner_text()
+            print(f"[5] 最終画面の全文（最大1500文字）:\n{body_text[:1500]}")
 
             if "No available times for the next 5 days" not in body_text:
-                # 画面上の時間帯ボタン（例: 4:30 PM）を取得
                 time_slots = page.locator("button:has-text('AM'), button:has-text('PM')").all_inner_texts()
-                
-                # 日付表記（例: Saturday, Sep 19）を抽出
                 date_match = re.search(r'(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+[A-Za-z]+\s+\d+', body_text)
                 date_str = date_match.group(0) if date_match else "日時選択画面にて空きあり"
-
                 time_str = ", ".join(time_slots) if time_slots else "空き枠あり"
 
                 msg = (
