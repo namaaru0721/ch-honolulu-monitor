@@ -2,7 +2,8 @@ import requests
 import re
 from playwright.sync_api import sync_playwright
 
-WEBHOOK_URL = "https://webhook.worksmobile.com/message/1f163fa9-b6ec-4de9-983d-4b44031a4800"
+import os
+WEBHOOK_URL = os.environ["WEBHOOK_URL"]
 TARGET_URL = "https://waitwhile.com/locations/chromeheartshonolulu"
 
 def send_line(text):
