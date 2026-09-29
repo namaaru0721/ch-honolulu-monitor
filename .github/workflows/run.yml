@@ -25,3 +25,5 @@ jobs:
 
       - name: Run script
         run: python honolulu.py
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
